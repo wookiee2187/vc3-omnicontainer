@@ -1,0 +1,8 @@
+[vc3-x86_64]
+name=VC3 x86_64
+baseurl=http://build.virtualclusters.org/production/x86_64
+gpgcheck=0
+[vc3-noarch]
+name=VC3 noarch
+baseurl=http://build.virtualclusters.org/production/noarch
+gpgcheck=0
