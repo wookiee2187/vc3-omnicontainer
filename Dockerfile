@@ -4,26 +4,29 @@ COPY vc3.repo /etc/yum.repos.d/vc3.repo
 
 RUN rpm --import http://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor
 RUN curl -L http://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo > /etc/yum.repos.d/htcondor-stable-rhel7.repo
-RUN yum install https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
-RUN wget https://dl.min.io/server/minio/release/linux-amd64/minio && \
-     chmod +x minio && \
-    ./minio server /data
 RUN  curl -LOs https://downloads.globus.org/toolkit/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm && \
      rpm --import https://downloads.globus.org/toolkit/gt6/stable/repo/rpm/RPM-GPG-KEY-Globus && \
-     yum install globus-connect-server-repo-latest.noarch.rpm
+     rpm -i globus-connect-server-repo-latest.noarch.rpm
 
 RUN yum install epel-release -y
-RUN yum install python-pip openssl ansible python-paramiko supervisor minicondor python-devel nginx uwsgi uwsgi-plugin-python2 python-virtualenv -y
+RUN yum install -y python-pip openssl ansible python-paramiko supervisor minicondor python-devel nginx uwsgi uwsgi-plugin-python2 python-virtualenv -y
 RUN yum groupinstall "Development Tools" -y
-RUN yum install yum-plugin-priorities
-RUN yum install globus-connect-server
+RUN yum install yum-plugin-priorities -y
+RUN yum install globus-connect-server -y
 RUN yum -y install python-pip
+RUN pip install kubernetes
+
+RUN pip install --upgrade pip
 RUN pip install jupyterlab
-RUN pip install reana-cluster
-RUN wget http://www-eu.apache.org/dist/spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.7.tgz && \
-     tar -xzf spark-2.2.1-bin-hadoop2.7.tgz && \
+RUN pip install --upgrade pip
+RUN yum install java -y
+RUN yum install wget -y
+RUN wget http://d3kbcqa49mib13.cloudfront.net/spark-1.6.0-bin-hadoop2.6.tgz && \
+     tar xvf spark-1.6.0-bin-hadoop2.6.tgz && \
      export SPARK_HOME=$HOME/spark-2.2.1-bin-hadoop2.7 && \
      export PATH=$PATH:$SPARK_HOME/bin
+RUN curl -O -L https://dl.min.io/server/minio/release/linux-amd64/minio && \
+     chmod +x minio
 
 
 # VC3 portal
